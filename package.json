@@ -1,0 +1,28 @@
+{
+  "name": "nesCompiler",
+  "version": "0.0.0",
+  "description": "Please welcome the first webifier of NES games!",
+  "bin": {
+    "compile": "bin/compile.js",
+    "extractSprite": "bin/extract-sprite.js"
+  },
+  "dependencies": {
+    "canvas": "~1.1.6",
+    "optimist": "~0.6.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gmarty/nes-compiler"
+  },
+  "keywords": [
+    "NES",
+    "Static recompiler",
+    "Static recompilation"
+  ],
+  "author": "Guillaume Marty <edo999@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/gmarty/nes-compiler/issues"
+  }
+}

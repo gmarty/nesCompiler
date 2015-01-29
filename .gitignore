@@ -1,0 +1,5 @@
+node_modules/
+dist/
+roms/*.nes
+roms/*.cdl
+static/
