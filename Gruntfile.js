@@ -5,7 +5,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     clientJSFiles: [
-      'src/**/*.ts'
+      'src/compiler/**/*.ts'
     ],
 
     typescript: {
@@ -18,7 +18,6 @@ module.exports = function(grunt) {
           target: 'es5',
           basePath: 'src',
           sourcemap: false,
-          declaration: false,
           comments: true
         }
       }
@@ -39,8 +38,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-typescript');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('client', ['typescript:client']);
   grunt.registerTask('server', ['typescript:server']);
 
-  grunt.registerTask('default', ['client', 'server']);
+  grunt.registerTask('default', ['server']);
 };

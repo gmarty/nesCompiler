@@ -23,12 +23,12 @@ if (!romFilePath) {
 }
 
 // Load the NES file.
-var romFileName = path.basename(romFilePath, '.nes');
+var romFileBaseName = path.basename(romFilePath, '.nes');
 var romFileContent = fs.readFileSync(romFilePath);
 var compiler = new Compiler(romFileContent);
 
 // Look for a JSON file located in the same folder with the same name.
-var tentativeJsonFilePath = path.resolve(romFilePath, '..', romFileName + '.json');
+var tentativeJsonFilePath = path.resolve(romFilePath, '..', romFileBaseName + '.json');
 
 var jsonFileExists = fs.existsSync(tentativeJsonFilePath);
 
@@ -47,4 +47,4 @@ if (json && json.entry_points) {
 var branches = compiler.compile();
 
 // Write the JavaScript file.
-fs.writeFileSync(path.resolve('./static/', romFileName + '.js'), branches);
+fs.writeFileSync(path.resolve('./static/', romFileBaseName + '.js'), branches);

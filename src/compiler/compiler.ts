@@ -7,6 +7,7 @@ import Mapper004 = require('./mappers/004');
 import Parser = require('./parser');
 import Analyser = require('./analyser');
 import Generator = require('./generator');
+import Renderer = require('./renderer');
 
 /** @const **/ var HEADER_LENGTH = 16;
 
@@ -28,6 +29,7 @@ class Compiler {
     this.parser = new Parser(this.mapper, rom);
     this.analyser = new Analyser();
     this.generator = new Generator();
+    this.renderer = new (<any>Renderer)(this);
   }
 
   // One function per instruction based compiler.
