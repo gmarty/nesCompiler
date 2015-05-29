@@ -8,28 +8,30 @@ import Parser = require('./parser');
 import Analyser = require('./analyser');
 import Generator = require('./generator');
 
-function Compiler(rom) {
-  if (!this.isValidRom(rom)) {
-    throw new Error('Not a valid NES ROM.');
+/** @const **/ var HEADER_LENGTH = 16;
+
+class Compiler {
+  private rom;
+  mapper;
+  parser;
+  analyser;
+  generator;
+  renderer;
+
+  constructor(rom) {
+    if (!this.isValidRom(rom)) {
+      throw new Error('Not a valid NES ROM.');
+    }
+
+    this.rom = rom;
+    this.mapper = this.instantiateMapper();
+    this.parser = new Parser(this.mapper, rom);
+    this.analyser = new Analyser();
+    this.generator = new Generator();
   }
 
-  this.rom = rom;
-  this.mapper = this.instantiateMapper();
-  this.parser = new Parser(this.mapper, rom);
-  this.analyser = new Analyser();
-  this.generator = new Generator();
-}
-
-export = Compiler;
-
-Compiler.prototype = {
-  rom: null,
-  parser: null,
-  analyser: null,
-  generator: null,
-
   // One function per instruction based compiler.
-  compile: function() {
+  compile() {
     try {
       this.parser.parse();
     } catch (e) {
@@ -45,29 +47,27 @@ Compiler.prototype = {
       'var branches = {' + '\n';
     for (var addr in fns) {
       ret += addr + ': function(self) {' + '\n' +
-      fns[addr]
-        .replace(/this\./g, 'self.') +
-      '},' + '\n';
+        fns[addr]
+          .replace(/this\./g, 'self.') +
+        '},' + '\n';
     }
     ret += '};' + '\n';
 
     return ret;
-  },
+  }
 
-  isValidRom: function(rom) {
+  isValidRom(rom) {
     var valid = true;
-    [78, 69, 83, 26].forEach(function(b, i) {
+    [78, 69, 83, 26].forEach((b, i) => {
       if (b != rom[i]) {
         valid = false;
       }
     });
 
     return valid;
-  },
+  }
 
-  instantiateMapper: function() {
-    /** @const **/ var headerLength = 16;
-
+  instantiateMapper() {
     var romCount = this.rom[4];
     var vromCount = this.rom[5] * 2;
     var mapperType = (this.rom[6] >> 4) | (this.rom[7] & 0xF0);
@@ -92,10 +92,12 @@ Compiler.prototype = {
     }
 
     console.log('Rom size: %sKB (raw: %sB)',
-      (this.rom.length - headerLength) / 1024, this.rom.length);
+      (this.rom.length - HEADER_LENGTH) / 1024, this.rom.length);
     console.log('Mapper: %d (%s), PRG-ROM Pages: %d × 16kB, CHR-ROM Pages: %d × 4kB',
       mapperType, mapper.name, romCount, vromCount);
 
     return mapper;
   }
-};
+}
+
+export = Compiler;
