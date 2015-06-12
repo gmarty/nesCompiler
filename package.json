@@ -7,8 +7,11 @@
     "extractSprite": "bin/extract-sprite.js"
   },
   "dependencies": {
-    "canvas": "~1.1.6",
-    "optimist": "~0.6.1"
+    "canvas": "^1.2.3",
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-typescript": "^0.6.2",
+    "optimist": "^0.6.1"
   },
   "devDependencies": {},
   "repository": {
