@@ -10,7 +10,7 @@ import fs = require('fs');
 import path = require('path');
 
 // Background colour if there is padding in the generated image.
-/** @const **/ var PADDING_COLOUR = 'green';
+/** @const **/ const PADDING_COLOUR = 'green';
 
 // Default sprite colours.
 var Colours: string[] = [

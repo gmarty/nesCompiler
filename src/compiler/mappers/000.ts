@@ -3,7 +3,7 @@
 'use strict';
 
 function Mapper(rawRom) {
-  /** @const **/ var headerLength = 16;
+  /** @const **/ const headerLength = 16;
 
   this.romCount = rawRom[4];
   this.vromCount = rawRom[5] * 2;

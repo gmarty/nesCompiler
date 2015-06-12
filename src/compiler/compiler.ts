@@ -9,7 +9,7 @@ import Analyser = require('./analyser');
 import Generator = require('./generator');
 import Renderer = require('./renderer');
 
-/** @const **/ var HEADER_LENGTH = 16;
+/** @const **/ const HEADER_LENGTH = 16;
 
 class Compiler {
   private rom;
