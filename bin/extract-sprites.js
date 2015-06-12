@@ -33,4 +33,24 @@ if (!compiler.mapper.vrom.length) {
   process.exit(0);
 }
 
+// Look for a JSON file located in the same folder with the same name.
+var tentativeJsonFilePath = path.resolve(romFilePath, '..', romFileBaseName + '.json');
+
+var jsonFileExists = fs.existsSync(tentativeJsonFilePath);
+
+var json = null;
+if (jsonFileExists) {
+  console.log('JSON file found at:', tentativeJsonFilePath);
+  json = require(tentativeJsonFilePath);
+}
+
+if (json && json.palettes) {
+  for (var i in json.palettes) {
+    json.palettes[i].forEach(function(palette) {
+      compiler.renderer.addPalette(palette);
+    });
+  }
+}
+
+// Render the spritesheet as a PNG image.
 compiler.renderer.generateSprite(romFileBaseName);

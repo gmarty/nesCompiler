@@ -25,6 +25,7 @@ if (!romFilePath) {
 // Load the NES file.
 var romFileBaseName = path.basename(romFilePath, '.nes');
 var romFileContent = fs.readFileSync(romFilePath);
+
 var compiler = new Compiler(romFileContent);
 
 // Look for a JSON file located in the same folder with the same name.
