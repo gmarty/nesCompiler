@@ -26,9 +26,9 @@ function Parser(mapper, rawRom) {
   this.reset_routine_addr = this.streamer.getUint16(0xfffc) - 1;
   this.irq_routine_addr = this.streamer.getUint16(0xfffe) - 1;
 
-  this.addAddress(this.nmi_routine_addr);
-  this.addAddress(this.reset_routine_addr);
-  this.addAddress(this.irq_routine_addr);
+  this.addJumpTarget(this.nmi_routine_addr);
+  this.addJumpTarget(this.reset_routine_addr);
+  this.addJumpTarget(this.irq_routine_addr);
 
   console.log('NMI:   $%s', toHex(this.nmi_routine_addr));
   console.log('Reset: $%s', toHex(this.reset_routine_addr));
@@ -51,10 +51,20 @@ Parser.prototype = {
   irq_routine_addr: 0,
 
   addresses: [],
+  jumpTargets: [],
   bytecodes: [],
 
   addAddress: function(address) {
     this.addresses.push(address);
+  },
+
+  /**
+   * Same as addAddress but will mark the address as a jump target.
+   * @param address
+   */
+  addJumpTarget: function(address) {
+    this.addresses.push(address);
+    this.jumpTargets.push(address);
   },
 
   parse: function() {
@@ -93,9 +103,9 @@ Parser.prototype = {
     }
 
     // Mark jump targets.
-    this.bytecodes[this.nmi_routine_addr].isJumpTarget = true;
-    this.bytecodes[this.reset_routine_addr].isJumpTarget = true;
-    this.bytecodes[this.irq_routine_addr].isJumpTarget = true;
+    this.jumpTargets.forEach(address => {
+      this.bytecodes[address].isJumpTarget = true;
+    });
 
     for (var address = 0, length = this.bytecodes.length; address < length; address++) {
       if (!this.bytecodes[address]) {
@@ -305,6 +315,7 @@ Parser.prototype = {
 
       case 28:
         target = typeof addr === 'number' ? addr - 1 : null;
+        endBranch = true;
         break;
 
       case 29:

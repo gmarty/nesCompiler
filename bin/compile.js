@@ -41,7 +41,7 @@ if (jsonFileExists) {
 
 if (json && json.entry_points) {
   json.entry_points.forEach(function(entryPoint) {
-    compiler.parser.addAddress(entryPoint);
+    compiler.parser.addJumpTarget(entryPoint);
   });
 }
 
